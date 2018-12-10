@@ -139,10 +139,6 @@ export class Blob extends React.Component<BlobProps, BlobState> {
     private goToDefinitionClicks = new Subject<MouseEvent>()
     private nextGoToDefinitionClick = (event: MouseEvent) => this.goToDefinitionClicks.next(event)
 
-    /** Emits when the close button was clicked */
-    private closeButtonClicks = new Subject<MouseEvent>()
-    private nextCloseButtonClick = (event: MouseEvent) => this.closeButtonClicks.next(event)
-
     /** Subscriptions to be disposed on unmout */
     private subscriptions = new Subscription()
 
@@ -160,7 +156,6 @@ export class Blob extends React.Component<BlobProps, BlobState> {
         )
 
         const hoverifier = createHoverifier<RepoSpec & RevSpec & FileSpec & ResolvedRevSpec>({
-            closeButtonClicks: this.closeButtonClicks,
             goToDefinitionClicks: this.goToDefinitionClicks,
             hoverOverlayElements: this.hoverOverlayElements,
             hoverOverlayRerenders: this.componentUpdates.pipe(
@@ -471,7 +466,6 @@ export class Blob extends React.Component<BlobProps, BlobState> {
                         linkComponent={LinkComponent}
                         hoverRef={this.nextOverlayElement}
                         onGoToDefinitionClick={this.nextGoToDefinitionClick}
-                        onCloseButtonClick={this.nextCloseButtonClick}
                     />
                 )}
                 {this.state.decorationsOrError &&

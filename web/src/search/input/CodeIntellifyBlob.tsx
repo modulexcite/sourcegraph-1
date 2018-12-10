@@ -106,10 +106,6 @@ export class CodeIntellifyBlob extends React.Component<Props, State> {
     private goToDefinitionClicks = new Subject<MouseEvent>()
     private nextGoToDefinitionClick = (event: MouseEvent) => this.goToDefinitionClicks.next(event)
 
-    /** Emits when the close button was clicked */
-    private closeButtonClicks = new Subject<MouseEvent>()
-    private nextCloseButtonClick = (event: MouseEvent) => this.closeButtonClicks.next(event)
-
     private subscriptions = new Subscription()
 
     private componentUpdates = new Subject<void>()
@@ -121,7 +117,6 @@ export class CodeIntellifyBlob extends React.Component<Props, State> {
         this.state = {}
 
         const hoverifier = createHoverifier<RepoSpec & RevSpec & FileSpec & ResolvedRevSpec>({
-            closeButtonClicks: this.closeButtonClicks,
             goToDefinitionClicks: this.goToDefinitionClicks,
             hoverOverlayElements: this.hoverOverlayElements,
             pushHistory: path => this.props.history.push(path),
@@ -278,8 +273,6 @@ export class CodeIntellifyBlob extends React.Component<Props, State> {
                         linkComponent={LinkComponent}
                         hoverRef={this.nextOverlayElement}
                         onGoToDefinitionClick={this.nextGoToDefinitionClick}
-                        onCloseButtonClick={this.nextCloseButtonClick}
-                        showCloseButton={false}
                         className={this.props.tooltipClass}
                     />
                 )}

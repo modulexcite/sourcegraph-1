@@ -224,10 +224,6 @@ function initCodeIntelligence(
     const goToDefinitionClicks = new Subject<MouseEvent>()
     const nextGoToDefinitionClick = (event: MouseEvent) => goToDefinitionClicks.next(event)
 
-    /** Emits when the close button was clicked */
-    const closeButtonClicks = new Subject<MouseEvent>()
-    const nextCloseButtonClick = (event: MouseEvent) => closeButtonClicks.next(event)
-
     /** Emits whenever the ref callback for the hover element is called */
     const hoverOverlayElements = new Subject<HTMLElement | null>()
     const nextOverlayElement = (element: HTMLElement | null) => hoverOverlayElements.next(element)
@@ -242,7 +238,6 @@ function initCodeIntelligence(
     const containerComponentUpdates = new Subject<void>()
 
     const hoverifier = createHoverifier<RepoSpec & RevSpec & FileSpec & ResolvedRevSpec>({
-        closeButtonClicks,
         goToDefinitionClicks,
         hoverOverlayElements,
         hoverOverlayRerenders: containerComponentUpdates.pipe(
@@ -318,7 +313,9 @@ function initCodeIntelligence(
                     if (mutation.type === 'childList') {
                         for (const removedNode of mutation.removedNodes) {
                             if (removedNode.contains(removedNode)) {
-                                nextCloseButtonClick(new MouseEvent('click'))
+                                // TODO!(sqs): how to force the overlay to close here? I think this is for when the token it's on has its element removed.
+                                //
+                                // nextCloseButtonClick(new MouseEvent('click'))
                             }
                         }
                     }
@@ -349,7 +346,6 @@ function initCodeIntelligence(
                           logTelemetryEvent={this.log}
                           hoverRef={nextOverlayElement}
                           onGoToDefinitionClick={nextGoToDefinitionClick}
-                          onCloseButtonClick={nextCloseButtonClick}
                       />,
                       this.portal
                   )
